@@ -42,3 +42,51 @@ public:
 3. **lamdba表达式的知识点**
 ![image](https://github.com/mianfeng/allnote/assets/64387330/edd382b9-3c55-46da-b7d0-9deb745604e1)
 
+4. **智能指针shared_ptr**
+```C++
+#include <iostream>
+#include <memory>
+
+class MyClass {
+public:
+    MyClass(int value) : data(value) {
+        std::cout << "MyClass Constructor" << std::endl;
+    }
+
+    ~MyClass() {
+        std::cout << "MyClass Destructor" << std::endl;
+    }
+
+    void printData() {
+        std::cout << "Data: " << data << std::endl;
+    }
+
+private:
+    int data;
+};
+
+int main() {
+    // 创建 shared_ptr
+    std::shared_ptr<MyClass> sharedPtr1 = std::make_shared<MyClass>(42);
+    sharedPtr1->printData();
+
+    // 复制 shared_ptr，引用计数增加
+    std::shared_ptr<MyClass> sharedPtr2 = sharedPtr1;
+    sharedPtr2->printData();
+
+    // 使用 weak_ptr 避免循环引用问题
+    std::shared_ptr<MyClass> sharedPtr3 = std::make_shared<MyClass>(99);
+    std::weak_ptr<MyClass> weakPtr = sharedPtr3;
+
+    // 通过 weak_ptr 获取 shared_ptr，需要检查是否有效
+    if (auto sharedPtr4 = weakPtr.lock()) {
+        sharedPtr4->printData();
+    } else {
+        std::cout << "Weak pointer expired" << std::endl;
+    }
+
+    return 0;
+}
+```
+   **同时两种初始化方式有以下区别：**
+   使用 std::make_shared 的优势在于内存分配和对象构造在一个步骤中完成，通常会比直接初始化 std::shared_ptr 更高效。此外，当多个 std::shared_ptr 共享同一个资源时，引用计数的内存也会分配在同一个内存块中。直接初始化 std::shared_ptr 是通过构造函数来分配内存和构造对象的。这意味着可能会分别执行两次内存分配，一次为对象本身，一次为引用计数。这种情况下，可能会在内存中存在两个不相邻的块，一个存储对象，一个存储引用计数。
