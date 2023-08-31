@@ -1,6 +1,7 @@
 # 旨在收集碰到的一些较好的写法
 
-1. ```c++
+1.**大小写**
+```c++
    // 将大写字符转换为小写字符
     std::transform(s.begin(), s.end(), s.begin(), ::tolower);
    
@@ -8,7 +9,7 @@
    s.erase(std::remove_if(s.begin(), s.end(),[](char c) { return !std::isalnum(c); }),s.end());
    ```
 
-2. KMP算法的C++实现
+3. **KMP算法的C++实现**
 
 ```C++
 
@@ -38,4 +39,6 @@ public:
 };
 
 ```
+3. **lamdba表达式的知识点**
+![image](https://github.com/mianfeng/allnote/assets/64387330/edd382b9-3c55-46da-b7d0-9deb745604e1)
 
