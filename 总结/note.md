@@ -142,4 +142,31 @@ int main() {
         return dummy->next;
     }
 ```
+## 7. 右值
+左值（Lvalue）：左值是具有持久性的表达式，通常是可以对其取地址的、可以被赋值的、可以被引用的表达式。它们是程序中具名的变量或对象。
 
+右值（Rvalue）：右值是临时的、不具有持久性的表达式，通常是字面常量、临时对象或表达式求值的结果。
+```C++
+#include <iostream>
+#include <vector>
+
+void ProcessVector(std::vector<int>&& rvalueVector) {
+    // 使用 std::move 将右值引用转换为右值，以移动资源
+    std::vector<int> localVector = std::move(rvalueVector);
+
+    // 在这里，localVector 拥有了 rvalueVector 的资源
+    std::cout << "Size of localVector: " << localVector.size() << std::endl;
+}
+
+int main() {
+    std::vector<int> myVector = {1, 2, 3, 4, 5};
+
+    // 调用 ProcessVector 时，将 myVector 转换为右值引用
+    ProcessVector(std::move(myVector));
+
+    // 在这里，myVector 不再拥有资源，因为它已经被移动
+    std::cout << "Size of myVector: " << myVector.size() << std::endl;  // 输出 0
+
+    return 0;
+}
+```
